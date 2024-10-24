@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/rules")
+@CrossOrigin(origins = "http://127.0.0.1:5500") 
 public class RuleController {
 
   @Autowired
@@ -47,15 +49,23 @@ public class RuleController {
 
  
   @PostMapping("/combine_rules")
-public ResponseEntity<Rule> combineRules(
-    @RequestBody Map<String, Object> request
-) {
-    @SuppressWarnings("unchecked")
-    List<String> ruleNames = (List<String>) request.get("ruleNames"); // List of rule names
-    String combinedRuleName = (String) request.get("combinedRuleName"); // Combined rule name from the request
-    Rule combinedRule = ruleService.combineRules(ruleNames, combinedRuleName); // Pass both to the service
-    return ResponseEntity.ok(combinedRule);
-}
+  public ResponseEntity<Rule> combineRules(
+      @RequestBody Map<String, Object> request
+  ) {
+      @SuppressWarnings("unchecked")
+      List<String> ruleNames = (List<String>) request.get("ruleNames"); // List of rule names
+      String combinedRuleName = (String) request.get("combinedRuleName"); // Combined rule name from the request
+      String operator = (String) request.get("operator"); // Operator from the request
+  
+      // Validate the operator
+      if (!operator.equals("AND") && !operator.equals("OR")) {
+          return ResponseEntity.badRequest().body(null); // Return 400 if the operator is invalid
+      }
+  
+      Rule combinedRule = ruleService.combineRules(ruleNames, combinedRuleName, operator); // Pass operator to the service
+      return ResponseEntity.ok(combinedRule);
+  }
+  
 
   
 
@@ -95,6 +105,15 @@ public ResponseEntity<Map<String, Boolean>> evaluateRule(
         try {
             ruleService.deleteRuleByName(name);
             return ResponseEntity.noContent().build(); // Return 204 No Content on success
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build(); // Handle not found case
+        }
+    }
+    @GetMapping("/{name}/attributes")
+    public ResponseEntity<List<String>> getAttributes(@PathVariable String name) {
+        try {
+            List<String> attributes = ruleService.getAttributesByRuleName(name);
+            return ResponseEntity.ok(attributes);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build(); // Handle not found case
         }

@@ -10,9 +10,13 @@ import com.ruleengine.ruleapplication.parser.Ruleparser;
 import com.ruleengine.ruleapplication.repository.RuleRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,50 +56,60 @@ public class RuleService {
         }
     }
 
-    public Rule combineRules(List<String> ruleNames, String combinedRuleName) {
-        // Check for duplicate combined rule name
-        if (ruleRepository.existsByName(combinedRuleName)) {
-            throw new DuplicateRuleNameException("Combined rule name already exists: " + combinedRuleName);
-        }
-
-        try {
-            List<Rule> rules = ruleRepository.findAllByNameIn(ruleNames);
-            if (rules.isEmpty()) {
-                throw new IllegalArgumentException("No rules found for provided names");
-            }
-
-            List<ASTNode> astNodes = new ArrayList<>();
-            for (Rule rule : rules) {
-                ASTNode astNode = objectMapper.readValue(
-                    rule.getAstJson(),
-                    ASTNode.class
-                );
-                astNodes.add(astNode);
-            }
-
-            ASTNode combinedAst = combineAstNodes(astNodes);
-            String astJson = objectMapper.writeValueAsString(combinedAst);
-
-            Rule combinedRule = new Rule();
-            combinedRule.setName(combinedRuleName); // Set the combined rule name from user input
-            combinedRule.setRuleString("Combined Rule"); // You can customize this further if needed
-            combinedRule.setAstJson(astJson);
-            combinedRule.setCreatedAt(LocalDateTime.now());
-            combinedRule.setUpdatedAt(LocalDateTime.now());
-
-            return ruleRepository.save(combinedRule);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to combine rules", e);
-        }
-    }
-
-    private ASTNode combineAstNodes(List<ASTNode> astNodes) {
-        ASTNode combined = astNodes.get(0);
-        for (int i = 1; i < astNodes.size(); i++) {
-            combined = new OperatorNode("AND", combined, astNodes.get(i));
-        }
-        return combined;
-    }
+    public Rule combineRules(List<String> ruleNames, String combinedRuleName, String operator) {
+      // Check for duplicate combined rule name
+      if (ruleRepository.existsByName(combinedRuleName)) {
+          throw new DuplicateRuleNameException("Combined rule name already exists: " + combinedRuleName);
+      }
+  
+      try {
+          List<Rule> rules = ruleRepository.findAllByNameIn(ruleNames);
+          if (rules.isEmpty()) {
+              throw new IllegalArgumentException("No rules found for provided names");
+          }
+  
+          List<ASTNode> astNodes = new ArrayList<>();
+          StringBuilder combinedRuleString = new StringBuilder();
+  
+          for (int i = 0; i < rules.size(); i++) {
+              Rule rule = rules.get(i);
+              ASTNode astNode = objectMapper.readValue(rule.getAstJson(), ASTNode.class);
+              astNodes.add(astNode);
+  
+              // Append the rule string
+              combinedRuleString.append("(").append(rule.getRuleString()).append(")");
+              if (i < rules.size() - 1) { // Add the operator if not the last rule
+                  combinedRuleString.append(" ").append(operator).append(" ");
+              }
+          }
+  
+          // Combine AST nodes using the specified operator
+          ASTNode combinedAst = combineAstNodes(astNodes, operator);
+          String astJson = objectMapper.writeValueAsString(combinedAst);
+  
+          Rule combinedRule = new Rule();
+          combinedRule.setName(combinedRuleName); // Set the combined rule name from user input
+          combinedRule.setRuleString(combinedRuleString.toString()); // Use the combined rule string
+          combinedRule.setAstJson(astJson);
+          combinedRule.setCreatedAt(LocalDateTime.now());
+          combinedRule.setUpdatedAt(LocalDateTime.now());
+  
+          // Save the combined rule to the repository
+          return ruleRepository.save(combinedRule);
+      } catch (Exception e) {
+          throw new RuntimeException("Failed to combine rules", e);
+      }
+  }
+  
+  
+  private ASTNode combineAstNodes(List<ASTNode> astNodes, String operator) {
+      ASTNode combined = astNodes.get(0);
+      for (int i = 1; i < astNodes.size(); i++) {
+          combined = new OperatorNode(operator, combined, astNodes.get(i)); // Use the operator passed from the user
+      }
+      return combined;
+  }
+  
 
     public List<Map<String, String>> getAllRules() {
         List<Rule> rules = ruleRepository.findAll(); // Fetch all rules from the repository
@@ -132,4 +146,39 @@ public class RuleService {
           throw new IllegalArgumentException("Rule not found with name: " + name); // Handle not found case
       }
   }
+  public List<String> getAttributesByRuleName(String ruleName) {
+    Optional<Rule> optionalRule = ruleRepository.findByName(ruleName);
+    if (optionalRule.isPresent()) {
+        Rule rule = optionalRule.get();
+        // Assuming the attributes are stored in the rule string or can be derived from the AST
+        return extractAttributesFromRule(rule);
+    } else {
+        throw new IllegalArgumentException("Rule not found with name: " + ruleName);
+    }
+}
+  private List<String> extractAttributesFromRule(Rule rule) {
+    String ruleString = rule.getRuleString();
+    // Regex to match variable names in the rule string.
+    // This example assumes variables are alphanumeric and can include underscores.
+    // Adjust regex according to your rule string format.
+    String regex = "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\b";
+    
+    // Create a Set to avoid duplicate attributes
+    Set<String> attributes = new HashSet<>();
+    
+    // Split the rule string by logical operators AND, OR, and also by comparison operators
+    String[] parts = ruleString.split("(?i)\\s+(AND|OR)\\s+|(?<=\\s)(<|<=|>|>=|==|!=|=)(?=\\s)"); // Handles AND/OR and comparison operators
+
+    for (String part : parts) {
+        // Find matches using regex
+        Matcher matcher = Pattern.compile(regex).matcher(part);
+        while (matcher.find()) {
+            attributes.add(matcher.group(1)); // Add attribute to the Set
+        }
+    }
+    
+    // Convert Set to List and return
+    return new ArrayList<>(attributes);
+}
+
 }
