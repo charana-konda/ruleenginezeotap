@@ -1,0 +1,336 @@
+body {
+   
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+/* Apply Arima font style to all header elements */
+h1, h2, h3, h4, h5, h6, .navbar{
+    font-family: "Arima", system-ui;
+    font-optical-sizing: auto;
+    font-weight: 400; /* Change this value to your desired weight */
+    font-style: normal;
+}
+
+/* Other existing styles... */
+
+header {
+    background-color: #50a1fe; /* A soothing blue color */
+    color: white;
+    text-align: center;
+    height: 130px;
+    padding: 20px 0; /* Padding for top and bottom */
+}
+.arima-header {
+    font-family: "Arima", system-ui;
+    font-optical-sizing: auto;
+    font-weight: 400; /* Change this value to your desired weight */
+    font-style: normal;
+  }
+  
+.header-container {
+    max-width: 800px; /* Maximum width for the header */
+    margin: 0 auto; /* Center the header */
+}
+
+.main-title {
+    font-size: 3em; /* Large font size for the main title */
+    margin: 0; /* Remove default margin */
+}
+
+.subtitle {
+    font-size: 1.5em; /* Slightly smaller for the subtitle */
+    margin-top: 10px; /* Space between title and subtitle */
+    font-weight: 300; /* Light weight for the subtitle */
+}
+
+.container {
+    max-width: 80%; /* Increased width for the container */
+    margin: 50px auto;
+    padding: 20px;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Optional: Make inputs wider to fill the form */
+input[type="text"],
+select {
+    width: 95%; /* Ensure inputs take full width of the container */
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px; /* Space below each form */
+    border-bottom: 1px solid #ddd; /* Light grey border at the bottom */
+    padding-bottom: 20px; /* Space between form content and border */
+}
+
+
+label {
+    margin-bottom: 8px;
+    color: #555;
+}
+
+input[type="text"] {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+select {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#createButton {
+    background-color: #28a745;
+    color: white;
+}
+
+#modifyButton {
+    background-color: #007bff;
+    color: white;
+}
+
+#combineButton {
+    background-color: #ffc107; /* Yellow color for the combine button */
+    color: white;
+    margin-top: 20px; /* Space above the combine button */
+}
+
+#evaluateRuleButton {
+    background-color: #de0046; /* Yellow color for the combine button */
+    color: white;
+    margin-top: 20px; /* Space above the combine button */
+}
+
+button:hover {
+    opacity: 0.9;
+}
+/* Get Attributes button styling */
+#fetchAttributesButton {
+    background-color: #8fa1ff; /* Yellow color for the combine button */
+    color: white;
+    margin-top: 20px; /* Space above the combine button */
+
+}
+
+#deleteAttributeButton {
+    background-color: #ff620e; /* Yellow color for the combine button */
+    color: white;
+    margin-top: 20px; /* Space above the combine button */
+
+}
+/* Ensure that labels and inputs inside the attributesContainer are displayed line by line */
+#attributesContainer label,
+#attributesContainer input {
+    display: block; /* Ensures that labels and inputs are displayed as block elements */
+    margin-bottom: 10px; /* Adds space between fields */
+    width: 100%; /* Makes input fields span the full width of the container */
+}
+
+#attributesContainer input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Style for the entire list container */
+#allRulesList {
+    margin-top: 20px;
+    padding-left: 0;
+    list-style-type: none;
+  
+}
+
+/* Style for each list item */
+#allRulesList li {
+    background-color: #f0f0f0; /* Light grey background for contrast */
+    border: 1px solid #ddd; /* Subtle border for separation */
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+    font-family: 'Arial', sans-serif; /* Clean font */
+    font-size: 16px;
+    color: #333; /* Darker text for readability */
+}
+
+/* Style for the rule name */
+.rule-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px; /* Add space between rule name and rule string */
+}
+
+/* Style for the rule string */
+.rule-string {
+    font-size: 16px;
+    color: #666; /* Lighter color for rule string */
+}
+
+/* Hover effect to make items interactive */
+#allRulesList li:hover {
+    background-color: #e0e0e0; /* Slightly darker grey on hover */
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out; /* Smooth transition */
+}
+
+/* Style the "Get All Rules" button */
+#getAllRulesButton {
+    margin-top: 20px;
+    margin-left: 44%;
+    padding: 10px 20px;
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* Hover effect for the button */
+#getAllRulesButton:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+/* Style for Navigation Bar */
+.navbar {
+    background-color: #333; /* Dark background for the navbar */
+    overflow: hidden; /* Ensure no overflow issues */
+    text-align: center; /* Center the navbar items */
+    padding: 10px 0; /* Add padding to the navbar */
+}
+
+.navbar ul {
+    list-style-type: none; /* Remove bullet points */
+    margin: 0;
+    padding: 0;
+}
+
+.navbar ul li {
+    display: inline-block; /* Display each item side by side */
+    margin-right: 50px; /* Space between each item */
+}
+
+.navbar ul li a {
+    color: white; /* White text color */
+    text-decoration: none; /* Remove underline from links */
+    padding: 14px 20px; /* Add padding for better click area */
+    font-size: 18px; /* Increase font size */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+.navbar ul li a:hover {
+    background-color: #575757; /* Darker color on hover */
+    border-radius: 4px; /* Add rounded corners on hover */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .header-container {
+        max-width: 90%; /* Allow header to use more width on smaller screens */
+    }
+
+    .main-title {
+        font-size: 2.5em; /* Smaller font size for the main title on smaller screens */
+    }
+
+    .subtitle {
+        font-size: 1.2em; /* Smaller font size for the subtitle on smaller screens */
+    }
+
+    .container {
+        max-width: 95%; /* Increase width to use more space on smaller screens */
+        padding: 10px; /* Reduce padding for smaller screens */
+    }
+
+    /* Make form elements full width */
+    input[type="text"],
+    select {
+        width: 100%; /* Ensure inputs take full width on smaller screens */
+    }
+
+    .button-group {
+        flex-direction: column; /* Stack buttons vertically */
+        align-items: center; /* Center buttons */
+    }
+
+    button {
+        width: 100%; /* Full width buttons */
+        margin-bottom: 10px; /* Space between buttons */
+    }
+
+    #getAllRulesButton {
+        margin: 0; /* Remove margin for centering on smaller screens */
+        width: 100%; /* Full width for the button */
+    }
+
+    /* Style for navigation bar */
+    .navbar ul li {
+        display: block; /* Stack navigation items vertically */
+        margin-bottom: 10px; /* Space between items */
+    }
+}
+
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 2em; /* Further reduce font size for very small screens */
+    }
+
+    .subtitle {
+        font-size: 1em; /* Further reduce font size for very small screens */
+    }
+
+    input[type="text"],
+    select {
+        font-size: 14px; /* Adjust font size for inputs */
+    }
+
+    button {
+        font-size: 14px; /* Adjust font size for buttons */
+    }
+
+    /* Optional: Adjust padding and margins for form elements */
+    form {
+        padding: 10px; /* Reduce form padding */
+    }
+
+    /* Ensure that rules list fits well */
+    #allRulesList {
+        margin-top: 10px; /* Reduce margin for lists */
+    }
+
+    /* Ensure button spacing is appropriate */
+    .button-group {
+        margin-top: 10px; /* Add margin for button group */
+    }
+}
