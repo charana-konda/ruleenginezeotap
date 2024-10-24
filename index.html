@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rule Management</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link to external CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Arima:wght@400&display=swap" rel="stylesheet">
+
+</head>
+<body>
+   
+
+    <!-- Header Section -->
+    <header class="arima-header">
+        <div class="header-container">
+            <h1 class="main-title">RULE ENGINE</h1>
+            <p class="subtitle">Make Your Own Rules</p>
+        </div>
+    </header>
+     <!-- Navigation Bar -->
+    <!-- Navigation Bar -->
+<nav class="navbar">
+    <ul>
+        <li><a href="#createRuleSection">Create Rule</a></li>
+        <li><a href="#combineRuleSection">Combine Rule</a></li>
+        <li><a href="#evaluateRuleSection">Evaluate User on Rule</a></li>
+        <li><a href="#deleteRuleSection">Delete Rule</a></li>
+        <li><a href="#getAllRulesSection">Get All Rules</a></li>
+    </ul>
+</nav>
+
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Create Rule Section -->
+        <h1 id="createRuleSection">Create or Modify Rule</h1>
+        <form id="ruleForm">
+            <label for="ruleName">Rule Name:</label>
+            <input type="text" id="ruleName" placeholder="Type your rule name (e.g., Rule1, Rule_1; no spaces)" required>
+            <label for="ruleString">Rule:</label>
+            <input type="text" id="ruleString" placeholder="Define your rule (e.g., age > 30 AND salary < 50000)" required>
+            <div class="button-group">
+                <button type="button" id="createButton">Create</button>
+                <button type="button" id="modifyButton">Modify</button>
+            </div>
+        </form>
+
+        <!-- Combine Rule Section -->
+        <h1 id="combineRuleSection">Combine Rules</h1>
+        <form id="combineForm">
+            <label for="ruleNames">Rule Names (comma-separated):</label>
+            <input type="text" id="ruleNames" placeholder="Enter rule names (e.g., Rule1, Rule2)" required>
+            <label for="combinedRuleName">Combined Rule Name:</label>
+            <input type="text" id="combinedRuleName" placeholder="Enter combined rule name" required>
+            <label for="combineType">Combine With:</label>
+            <select id="combineType">
+                <option value="AND">AND</option>
+                <option value="OR">OR</option>
+            </select>
+            <button type="button" id="combineButton">Combine</button>
+        </form>
+
+        <!-- Evaluate Rule Section -->
+        <h1 id="evaluateRuleSection">Evaluate User on Rule</h1>
+        <form id="evaluateForm">
+            <label for="evaluateRuleName">Rule Name:</label>
+            <input type="text" id="evaluateRuleName" placeholder="Enter rule name (e.g., Rule1)" required>
+            <button type="button" id="fetchAttributesButton">Get Attributes</button>
+            <div id="attributesContainer"></div> <!-- Placeholder for dynamic attribute fields -->
+            <button type="button" id="evaluateRuleButton" style="display: none;">Evaluate Rule</button>
+            <p id="resultMessage"></p> <!-- Placeholder for result message -->
+        </form>
+
+        <!-- Delete Rule Section -->
+        <h1 id="deleteRuleSection">Delete Rule</h1>
+        <form id="deleteAttributeForm">
+            <label for="deleteRuleName">Rule Name:</label>
+            <input type="text" id="deleteRuleName" placeholder="Enter rule name to delete" required>
+            <button type="button" id="deleteAttributeButton">Delete Rule</button>
+        </form>
+
+        <!-- Get All Rules Section -->
+        <h1 id="getAllRulesSection">All Rules</h1>
+        <button id="getAllRulesButton">Get All Rules</button>
+        <ul id="allRulesList"></ul> <!-- Placeholder to display all rules -->
+    </div>
+
+    <script src="script.js"></script> <!-- Link to external JS -->
+</body>
+</html>
